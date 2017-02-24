@@ -2,6 +2,7 @@
 #author : lgh
 import types
 import MySQLdb
+import  traceback
 class mysqldb:
     conn = ''
     cur = ''
@@ -140,6 +141,7 @@ class mysqldb:
             return arr
         return 'type not is dict'
 
+
     #find single data
     def findOne(self,where={},order=""):
         strs = None
@@ -158,7 +160,16 @@ class mysqldb:
             return row[0] if len(row) > 0 else {}
         except:
             return False
-
+    #sql 语句查询
+    def query(self,sql):
+        if len(sql) == 0:
+            raise Exception("sql is null")
+        try:
+            self.cur.execute(sql)
+            row = self.cur.fetchall()
+            return row;
+        except Exception, e:
+            print e.args
     # get last sql
     def getLastSql(self):
         return self.lastSql
